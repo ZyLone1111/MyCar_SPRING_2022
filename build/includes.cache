@@ -1,0 +1,87 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.3\\cores\\arduino"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.3\\variants\\standard"
+  },
+  {
+    "Sourcefile": "c:\\Program Files\\arduino-1.8.19\\MYCAR\\build\\sketch\\mecanum_move.ino.cpp",
+    "Include": "Wire.h",
+    "Includepath": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.3\\libraries\\Wire\\src"
+  },
+  {
+    "Sourcefile": "c:\\Program Files\\arduino-1.8.19\\MYCAR\\build\\sketch\\mecanum_move.ino.cpp",
+    "Include": "QGPMaker_MotorShield.h",
+    "Includepath": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2"
+  },
+  {
+    "Sourcefile": "c:\\Program Files\\arduino-1.8.19\\MYCAR\\build\\sketch\\mecanum_move.ino.cpp",
+    "Include": "QGPMaker_IICSensorbar.h",
+    "Includepath": "C:\\Program Files\\arduino-1.8.19\\libraries\\LineFollowerArray5s"
+  },
+  {
+    "Sourcefile": "c:\\Program Files\\arduino-1.8.19\\MYCAR\\build\\sketch\\mecanum_move.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.3\\libraries\\Wire\\src\\Wire.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\ASUS\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.3\\libraries\\Wire\\src\\utility\\twi.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\Adafruit_MS_PWMServoDriver.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PS2X_lib.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PinChangeInterrupt.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PinChangeInterrupt0.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PinChangeInterrupt1.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PinChangeInterrupt2.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\PinChangeInterrupt3.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\QGPMakerMotorShield_V5.2\\QGPMaker_MotorShield.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Program Files\\arduino-1.8.19\\libraries\\LineFollowerArray5s\\QGPMaker_IICSensorbar.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
