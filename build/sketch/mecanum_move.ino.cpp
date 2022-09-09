@@ -23,7 +23,7 @@ static enum { MID,
               ALL,
               UNDETECTED } movingStatus,
     last_movingStatus;
-char *Tmove[]={"MID","LEFT1","RIGHT1","LEFT2","RIGHT2","ALL","UNDETECTED"};
+char *Tmove[] = {"MID", "LEFT1", "RIGHT1", "LEFT2", "RIGHT2", "ALL", "UNDETECTED"};
 
 double kp, ki, kd;
 int pwmRestrict = 100;
@@ -70,41 +70,43 @@ void straightForward();
 void show_rpm();
 #line 162 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void show_signal();
-#line 175 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 177 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 int calPID1(int velocity, int target);
-#line 202 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 204 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control1(int targetVolocity);
-#line 225 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 227 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control2(int targetVolocity);
-#line 245 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 247 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control3(int targetVolocity);
-#line 265 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 267 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control4(int targetVolocity);
-#line 285 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 287 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control_all(int targetVolocity1, int targetVolocity2, int targetVolocity3, int targetVolocity4);
-#line 297 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 299 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void init_pos();
-#line 305 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 307 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void fetch();
-#line 324 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 326 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void place();
-#line 333 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 335 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void readPos();
-#line 349 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 351 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void getStatus();
-#line 377 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 379 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void lineFollow1();
-#line 402 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
-void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,int vRight2,int lapse);
-#line 451 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
-void straightTrough(int n,void (*f)(int x));
-#line 472 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
-void set_middle(void (*f)(int x), int pwm, int lasting_time);
-#line 486 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
-void mirco_movement(void (*func)(int x), int pwm, int lasting_time);
-#line 495 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 404 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void lineFollow(int vForward1, int vForward2, int vLeft1, int vRight1, int vLeft2, int vRight2, int lapse);
+#line 453 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void through_horizen(int n, void (*f)(int x), int pwm);
+#line 477 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void set_middle(void (*f)(int x), int pwm, int delay_time);
+#line 493 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void micro_movement(void (*func)(int x), int pwm, int lasting_time);
+#line 500 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void turn_90_deg(void (*func)(int x), int pwm, int last_time);
+#line 510 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup();
-#line 524 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 539 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void loop();
 #line 61 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void forward(int startPWM)
@@ -219,7 +221,9 @@ void show_signal()
   Serial.println(Encoder4.read());
   delay(50);
 }
-
+/******************************************
+              PID algrithm，但是不想用
+******************************************/
 static double bias, PWM, last_bias, last_bias2;
 int calPID1(int velocity, int target)
 {
@@ -402,7 +406,7 @@ void getStatus()
   SM = (io.digitalRead(INPUT_PIN_S2));
   SL = (io.digitalRead(INPUT_PIN_S3));
   SLL = (io.digitalRead(INPUT_PIN_S4));
-  detectNum=((SRR==0)+(SR==0)+(SM==0)+(SL==0)+(SLL==0));
+  detectNum = ((SRR == 0) + (SR == 0) + (SM == 0) + (SL == 0) + (SLL == 0));
 
   if (SRR == HIGH && SR == HIGH && SM == LOW && SL == HIGH && SLL == HIGH)
     movingStatus = MID;
@@ -448,7 +452,7 @@ void lineFollow1()
   }
 }
 
-void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,int vRight2,int lapse)
+void lineFollow(int vForward1, int vForward2, int vLeft1, int vRight1, int vLeft2, int vRight2, int lapse)
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
   SR = (io.digitalRead(INPUT_PIN_S1));
@@ -496,46 +500,59 @@ void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,in
   delay(lapse);
 }
 
-//走过n条黑线
-void straightTrough(int n,void (*f)(int x))
+//走过n条horizen黑线
+void through_horizen(int n, void (*f)(int x), int pwm)
 {
   Serial.println("Test!");
   int cnt = 0;
   int num;
-  f(20);
+  f(pwm);
   while (cnt < n)
   {
     getStatus();
-    
-    if (detectNum>=3){
+
+    if (detectNum >= 3)
+    {
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
-      delay(500);
+      if(cnt!=n)delay(500);//最后一次精准停在线上
     }
     // last_movingStatus=movingStatus;
   }
   stopMoving();
+  delay(1000);
+  return;
 }
-
-void set_middle(void (*f)(int x), int pwm, int lasting_time)
+//
+void set_middle(void (*f)(int x), int pwm, int delay_time)
 {
-  while(1){
+  while (1)
+  {
     getStatus();
     f(pwm);
-    if(movingStatus==MID){
+    if (movingStatus == MID)
+    {
       stopMoving();
-      delay(lasting_time);
+      delay(delay_time);
       return;
     }
   }
 }
 
 //微调函数
-void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
+void micro_movement(void (*func)(int x), int pwm, int lasting_time)
 {
   func(pwm);
   delay(lasting_time);
+  stopMoving();
+}
+// 90deg转弯
+void turn_90_deg(void (*func)(int x), int pwm, int last_time)
+{
+  func(pwm);
+  delay(last_time);
+  return;
 }
 /******************************************
               SetupConfig
@@ -559,7 +576,7 @@ void setup()
 
   init_pos();
   delay(1000);
-  
+
   pos = 0;
   rpm = 0;
   PPR = 12;
@@ -572,20 +589,39 @@ void setup()
 
 void loop()
 {
-  // moveLeft();
-  // delay(1000);
-  // straightTrough(5);
-  straightTrough(5,forward);
+  // ATTENTION:以下流程建立在小车走直线(包括forward(),backward(),moveLeft,moveRight,etc)的基础上,所以需要调直线.
+
+  // 难度系数1.5
+
+  // 找到第五条线
+  // void through_horizen(int n,void (*f)(int x),int pwm)
+  through_horizen(5, forward, 40);
   delay(1000);
-  // void set_middle(void *func(int x), int pwm, int lasting_time)
-  set_middle(moveLeft,40,2000);
-  backward(20);
-  delay(100);
-  stopMoving();
+
+  // 找到右边第一条中线
+  // void set_middle(void (*f)(int x), int pwm, int delay_time)
+  set_middle(moveLeft, 40, 2000);
+
+  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  // void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
+  micro_movement(backward,40,100);
   delay(1000);
-  fetch();
-  delay(1000);
-  place();
-  // void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,int vRight2,int lapse)
-  // lineFollow(100,40,30,30,60,60,50);
+
+  // 向右转90,需要精准,需要调整pwm与last_time
+  // void turn_90_deg(void (*func)(int x),int pwm,int last_time)
+  turn_90_deg(turnLeft,40,2000);
+
+  // 重新找到中线
+  set_middle(moveRight, 40, 2000);
+
+  // 精准找到中间
+  micro_movement(moveLeft,40,3000);
+
+  // 走直线到第一个投放点
+  through_horizen(4,forward,40);
+  
+  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  micro_movement(backward,40,100);
+
+  return;
 }

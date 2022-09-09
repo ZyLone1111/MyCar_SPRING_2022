@@ -22,7 +22,7 @@ static enum { MID,
               ALL,
               UNDETECTED } movingStatus,
     last_movingStatus;
-char *Tmove[]={"MID","LEFT1","RIGHT1","LEFT2","RIGHT2","ALL","UNDETECTED"};
+char *Tmove[] = {"MID", "LEFT1", "RIGHT1", "LEFT2", "RIGHT2", "ALL", "UNDETECTED"};
 
 double kp, ki, kd;
 int pwmRestrict = 100;
@@ -174,7 +174,12 @@ void show_signal()
   Serial.println(Encoder4.read());
   delay(50);
 }
+/******************************************
 
+              PID algrithm，但是不想用
+
+******************************************/
+# 176 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 static double bias, PWM, last_bias, last_bias2;
 int calPID1(int velocity, int target)
 {
@@ -299,7 +304,7 @@ void pid_control_all(int targetVolocity1, int targetVolocity2, int targetVolocit
               Servos
 
 ******************************************/
-# 297 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 299 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void init_pos()
 {
   Servo1->writeServo(45);
@@ -353,7 +358,7 @@ void readPos()
               Tasks
 
 ******************************************/
-# 349 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 351 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void getStatus()
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
@@ -361,7 +366,7 @@ void getStatus()
   SM = (io.digitalRead(INPUT_PIN_S2));
   SL = (io.digitalRead(INPUT_PIN_S3));
   SLL = (io.digitalRead(INPUT_PIN_S4));
-  detectNum=((SRR==0)+(SR==0)+(SM==0)+(SL==0)+(SLL==0));
+  detectNum = ((SRR == 0) + (SR == 0) + (SM == 0) + (SL == 0) + (SLL == 0));
 
   if (SRR == 0x1 && SR == 0x1 && SM == 0x0 && SL == 0x1 && SLL == 0x1)
     movingStatus = MID;
@@ -407,7 +412,7 @@ void lineFollow1()
   }
 }
 
-void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,int vRight2,int lapse)
+void lineFollow(int vForward1, int vForward2, int vLeft1, int vRight1, int vLeft2, int vRight2, int lapse)
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
   SR = (io.digitalRead(INPUT_PIN_S1));
@@ -455,53 +460,66 @@ void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,in
   delay(lapse);
 }
 
-//走过n条黑线
-void straightTrough(int n,void (*f)(int x))
+//走过n条horizen黑线
+void through_horizen(int n, void (*f)(int x), int pwm)
 {
   Serial.println("Test!");
   int cnt = 0;
   int num;
-  f(20);
+  f(pwm);
   while (cnt < n)
   {
     getStatus();
 
-    if (detectNum>=3){
+    if (detectNum >= 3)
+    {
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
-      delay(500);
+      if(cnt!=n)delay(500);//最后一次精准停在线上
     }
     // last_movingStatus=movingStatus;
   }
   stopMoving();
+  delay(1000);
+  return;
 }
-
-void set_middle(void (*f)(int x), int pwm, int lasting_time)
+//
+void set_middle(void (*f)(int x), int pwm, int delay_time)
 {
-  while(1){
+  while (1)
+  {
     getStatus();
     f(pwm);
-    if(movingStatus==MID){
+    if (movingStatus == MID)
+    {
       stopMoving();
-      delay(lasting_time);
+      delay(delay_time);
       return;
     }
   }
 }
 
 //微调函数
-void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
+void micro_movement(void (*func)(int x), int pwm, int lasting_time)
 {
   func(pwm);
   delay(lasting_time);
+  stopMoving();
+}
+// 90deg转弯
+void turn_90_deg(void (*func)(int x), int pwm, int last_time)
+{
+  func(pwm);
+  delay(last_time);
+  return;
 }
 /******************************************
 
               SetupConfig
 
 ******************************************/
-# 495 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 510 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup()
 {
   AFMS.begin(50); // 50是啥我不清楚
@@ -533,20 +551,39 @@ void setup()
 
 void loop()
 {
-  // moveLeft();
-  // delay(1000);
-  // straightTrough(5);
-  straightTrough(5,forward);
+  // ATTENTION:以下流程建立在小车走直线(包括forward(),backward(),moveLeft,moveRight,etc)的基础上,所以需要调直线.
+
+  // 难度系数1.5
+
+  // 找到第五条线
+  // void through_horizen(int n,void (*f)(int x),int pwm)
+  through_horizen(5, forward, 40);
   delay(1000);
-  // void set_middle(void *func(int x), int pwm, int lasting_time)
-  set_middle(moveLeft,40,2000);
-  backward(20);
-  delay(100);
-  stopMoving();
+
+  // 找到右边第一条中线
+  // void set_middle(void (*f)(int x), int pwm, int delay_time)
+  set_middle(moveLeft, 40, 2000);
+
+  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  // void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
+  micro_movement(backward,40,100);
   delay(1000);
-  fetch();
-  delay(1000);
-  place();
-  // void lineFollow(int vForward1,int vForward2,int vLeft1,int vRight1,int vLeft2,int vRight2,int lapse)
-  // lineFollow(100,40,30,30,60,60,50);
+
+  // 向右转90,需要精准,需要调整pwm与last_time
+  // void turn_90_deg(void (*func)(int x),int pwm,int last_time)
+  turn_90_deg(turnLeft,40,2000);
+
+  // 重新找到中线
+  set_middle(moveRight, 40, 2000);
+
+  // 精准找到中间
+  micro_movement(moveLeft,40,3000);
+
+  // 走直线到第一个投放点
+  through_horizen(4,forward,40);
+
+  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  micro_movement(backward,40,100);
+
+  return;
 }
