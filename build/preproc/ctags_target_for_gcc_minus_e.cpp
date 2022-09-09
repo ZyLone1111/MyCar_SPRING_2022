@@ -151,6 +151,12 @@ void straightForward()
   DCMotor_4->run(1);
 }
 
+/******************************************
+
+               Toolkit
+
+******************************************/
+# 153 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void show_rpm()
 {
   Serial.print(Encoder1.getRPM());
@@ -179,7 +185,7 @@ void show_signal()
               PID algrithm，但是不想用
 
 ******************************************/
-# 176 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 179 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 static double bias, PWM, last_bias, last_bias2;
 int calPID1(int velocity, int target)
 {
@@ -304,7 +310,7 @@ void pid_control_all(int targetVolocity1, int targetVolocity2, int targetVolocit
               Servos
 
 ******************************************/
-# 299 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 302 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void init_pos()
 {
   Servo1->writeServo(45);
@@ -358,7 +364,7 @@ void readPos()
               Tasks
 
 ******************************************/
-# 351 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 354 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void getStatus()
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
@@ -460,7 +466,7 @@ void lineFollow(int vForward1=40, int vForward2=40, int vLeft1=30, int vRight1=3
   delay(lapse);
 }
 
-//走过n条horizen黑线
+//走过n条horizon黑线
 void through_horizen(int n, void (*f)(int x), int pwm)
 {
   Serial.println("Test!");
@@ -472,6 +478,16 @@ void through_horizen(int n, void (*f)(int x), int pwm)
     getStatus();
     if (detectNum >= 3)
     {
+      if(SRR==1){
+        turnLeft();
+        delay(50);
+        f(pwm);
+      }
+      else if(SLL==1){
+        turnRight();
+        delay(50);
+        f(pwm);
+      }
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
@@ -531,12 +547,32 @@ void set_horizon(){
   }
 
 }
+
+/******************************************
+
+              test_functions
+
+******************************************/
+# 541 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void command_sets_2(){
+  // 假设对完线，开始测试旋转
+  micro_movement(backward,40,400);
+  delay(2000);
+  turn_90_deg(turnLeft,40,2500); // 这个好像蛮准的
+  delay(2000);
+
+  set_middle(moveRight,40,2000);
+  micro_movement(moveLeft,40,600); // delay_time = ___ waited to be set
+  set_horizon();
+  delay(10000);
+}
+
 /******************************************
 
               SetupConfig
 
 ******************************************/
-# 527 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 558 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup()
 {
   AFMS.begin(50); // 50是啥我不清楚
@@ -568,15 +604,8 @@ void setup()
 
 void loop()
 {
-  // 假设对完先，开始测试旋转
-  Serial.println("TEST BEGIN!");
-  micro_movement(backward,40,400);
-  delay(2000);
-  Serial.println("WHY BACKWARD AGAIN???");
-  turn_90_deg(turnLeft,40,2500);
-  delay(2000);
-  Serial.println("LOOP OVER.");
-
+  through_horizen(5,forward,40);
+  delay(5000);
   // through_horizen(5, forward, 40);
   // delay(1000);
   // micro_movement(backward, 40, 400);

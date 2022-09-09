@@ -66,47 +66,49 @@ void forward(int startPWM);
 void stopMoving();
 #line 138 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void straightForward();
-#line 150 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 153 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void show_rpm();
-#line 162 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 165 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void show_signal();
-#line 177 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 180 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 int calPID1(int velocity, int target);
-#line 204 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 207 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control1(int targetVolocity);
-#line 227 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 230 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control2(int targetVolocity);
-#line 247 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 250 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control3(int targetVolocity);
-#line 267 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 270 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control4(int targetVolocity);
-#line 287 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 290 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void pid_control_all(int targetVolocity1, int targetVolocity2, int targetVolocity3, int targetVolocity4);
-#line 299 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 302 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void init_pos();
-#line 307 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 310 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void fetch();
-#line 326 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 329 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void place();
-#line 335 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 338 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void readPos();
-#line 351 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 354 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void getStatus();
-#line 379 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 382 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void lineFollow1();
-#line 453 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 456 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void through_horizen(int n, void (*f)(int x), int pwm);
-#line 477 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 490 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void set_middle(void (*f)(int x), int pwm, int delay_time);
-#line 493 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 506 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void micro_movement(void (*func)(int x), int pwm, int last_time);
-#line 501 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 514 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void turn_90_deg(void (*func)(int x), int pwm, int last_time);
-#line 509 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 522 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void set_horizon();
-#line 527 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 541 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+void command_sets_2();
+#line 558 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup();
-#line 556 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 587 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void loop();
 #line 61 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void forward(int startPWM)
@@ -198,6 +200,9 @@ void straightForward()
   DCMotor_4->run(FORWARD);
 }
 
+/******************************************
+               Toolkit
+******************************************/
 void show_rpm()
 {
   Serial.print(Encoder1.getRPM());
@@ -500,7 +505,7 @@ void lineFollow(int vForward1=40, int vForward2=40, int vLeft1=30, int vRight1=3
   delay(lapse);
 }
 
-//走过n条horizen黑线
+//走过n条horizon黑线
 void through_horizen(int n, void (*f)(int x), int pwm)
 {
   Serial.println("Test!");
@@ -512,6 +517,16 @@ void through_horizen(int n, void (*f)(int x), int pwm)
     getStatus();
     if (detectNum >= 3)
     {
+      if(SRR==1){
+        turnLeft();
+        delay(50);
+        f(pwm);
+      }
+      else if(SLL==1){
+        turnRight();
+        delay(50);
+        f(pwm);
+      }
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
@@ -571,6 +586,24 @@ void set_horizon(){
   }
   
 }
+
+/******************************************
+              test_functions
+******************************************/
+
+void command_sets_2(){
+  // 假设对完线，开始测试旋转
+  micro_movement(backward,40,400);
+  delay(2000);
+  turn_90_deg(turnLeft,40,2500); // 这个好像蛮准的
+  delay(2000);
+  
+  set_middle(moveRight,40,2000);
+  micro_movement(moveLeft,40,600); // delay_time = ___ waited to be set
+  set_horizon();
+  delay(10000);
+}
+
 /******************************************
               SetupConfig
 ******************************************/
@@ -606,15 +639,8 @@ void setup()
 
 void loop()
 {
-  // 假设对完先，开始测试旋转
-  Serial.println("TEST BEGIN!");
-  micro_movement(backward,40,400);
-  delay(2000);
-  Serial.println("WHY BACKWARD AGAIN???");
-  turn_90_deg(turnLeft,40,2500);
-  delay(2000);
-  Serial.println("LOOP OVER.");
-
+  through_horizen(5,forward,40);
+  delay(5000);
   // through_horizen(5, forward, 40);
   // delay(1000);
   // micro_movement(backward, 40, 400);

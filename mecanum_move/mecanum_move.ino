@@ -464,6 +464,16 @@ void through_horizen(int n, void (*f)(int x), int pwm)
     getStatus();
     if (detectNum >= 3)
     {
+      if(SRR==1){
+        turnLeft();
+        delay(50);
+        f(pwm);
+      }
+      else if(SLL==1){
+        turnRight();
+        delay(50);
+        f(pwm);
+      }
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
@@ -523,6 +533,24 @@ void set_horizon(){
   }
   
 }
+
+/******************************************
+              test_functions
+******************************************/
+
+void command_sets_2(){
+  // 假设对完线，开始测试旋转
+  micro_movement(backward,40,400);
+  delay(2000);
+  turn_90_deg(turnLeft,40,2500); // 这个好像蛮准的
+  delay(2000);
+  
+  set_middle(moveRight,40,2000);
+  micro_movement(moveLeft,40,600); // delay_time = ___ waited to be set
+  set_horizon();
+  delay(10000);
+}
+
 /******************************************
               SetupConfig
 ******************************************/
@@ -558,15 +586,8 @@ void setup()
 
 void loop()
 {
-  // 假设对完先，开始测试旋转
-  Serial.println("TEST BEGIN!");
-  micro_movement(backward,40,400);
-  delay(2000);
-  Serial.println("WHY BACKWARD AGAIN???");
-  turn_90_deg(turnLeft,40,2500);
-  delay(2000);
-  Serial.println("LOOP OVER.");
-
+  through_horizen(5,forward,40);
+  delay(5000);
   // through_horizen(5, forward, 40);
   // delay(1000);
   // micro_movement(backward, 40, 400);
