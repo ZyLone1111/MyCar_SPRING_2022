@@ -501,17 +501,19 @@ void set_middle(void (*f)(int x), int pwm, int delay_time)
 }
 
 //微调函数
-void micro_movement(void (*func)(int x), int pwm, int lasting_time)
+void micro_movement(void (*func)(int x), int pwm, int last_time)
 {
   func(pwm);
-  delay(lasting_time);
+  delay(last_time);
   stopMoving();
+  return;
 }
 // 90deg转弯
 void turn_90_deg(void (*func)(int x), int pwm, int last_time)
 {
   func(pwm);
   delay(last_time);
+  stopMoving();
   return;
 }
 
@@ -534,7 +536,7 @@ void set_horizon(){
               SetupConfig
 
 ******************************************/
-# 525 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 527 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup()
 {
   AFMS.begin(50); // 50是啥我不清楚
@@ -566,21 +568,31 @@ void setup()
 
 void loop()
 {
-  // moveLeft(40);
-  // show_rpm();
+  // 假设对完先，开始测试旋转
+  Serial.println("TEST BEGIN!");
+  micro_movement(backward,40,400);
+  delay(2000);
+  Serial.println("WHY BACKWARD AGAIN???");
+  turn_90_deg(turnLeft,40,2500);
+  delay(2000);
+  Serial.println("LOOP OVER.");
 
+  // through_horizen(5, forward, 40);
+  // delay(1000);
+  // micro_movement(backward, 40, 400);
+  // delay(1000);
+  // set_middle(moveLeft, 40, 2000);
+  // delay(1000);
+  // set_horizon();
+  // delay(2000);
+
+  // micro_movement(backward,40,400);
+  // turn_90_deg(turnLeft,40,2000);
+  // through_horizen(4,forward,40);
+  // set_middle(moveRight,40,2000);
+  // micro_movement(moveLeft,40,500);
   // set_horizon();
   // delay(5000);
-
-  through_horizen(5, forward, 40);
-  delay(1000);
-  micro_movement(backward, 40, 500);
-  delay(1000);
-  set_middle(moveLeft, 40, 2000);
-  delay(1000);
-  set_horizon();
-  delay(100000);
-
 
   // ATTENTION:以下流程建立在小车走直线(包括forward(),backward(),moveLeft,moveRight,etc)的基础上,所以需要调直线.
 
