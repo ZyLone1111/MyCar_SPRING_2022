@@ -71,13 +71,13 @@ void forward(int startPWM)
 }
 void turnLeft(int startPWM = 200)
 {
-  DCMotor_1->setSpeed(startPWM);
+  DCMotor_1->setSpeed(startPWM*1.1);
   DCMotor_1->run(BRAKE);
   DCMotor_2->setSpeed(startPWM);
   DCMotor_2->run(BRAKE);
-  DCMotor_3->setSpeed(startPWM);
+  DCMotor_3->setSpeed(startPWM*0.7);
   DCMotor_3->run(FORWARD);
-  DCMotor_4->setSpeed(startPWM);
+  DCMotor_4->setSpeed(startPWM*1.3);
   DCMotor_4->run(FORWARD);
 }
 void turnRight(int startPWM = 200)
@@ -401,7 +401,7 @@ void lineFollow1()
   }
 }
 
-void lineFollow(int vForward1, int vForward2, int vLeft1, int vRight1, int vLeft2, int vRight2, int lapse)
+void lineFollow(int vForward1=40, int vForward2=40, int vLeft1=30, int vRight1=30, int vLeft2=60, int vRight2=60, int lapse=20)
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
   SR = (io.digitalRead(INPUT_PIN_S1));
@@ -459,13 +459,13 @@ void through_horizen(int n, void (*f)(int x), int pwm)
   while (cnt < n)
   {
     getStatus();
-
     if (detectNum >= 3)
     {
       cnt++;
       Serial.print("cnt=");
       Serial.println(cnt);
-      if(cnt!=n)delay(500);//最后一次精准停在线上
+      if (cnt != n)
+        delay(500); //最后一次精准停在线上
     }
     // last_movingStatus=movingStatus;
   }
@@ -503,6 +503,21 @@ void turn_90_deg(void (*func)(int x), int pwm, int last_time)
   delay(last_time);
   return;
 }
+
+void set_horizon(){
+  while(true)
+  {
+    getStatus();
+    if(detectNum==5){
+      stopMoving();
+      return;
+    }
+    else{
+      lineFollow();
+    }
+  }
+  
+}
 /******************************************
               SetupConfig
 ******************************************/
@@ -538,39 +553,55 @@ void setup()
 
 void loop()
 {
+  // moveLeft(40);
+  // show_rpm();
+
+  // set_horizon();
+  // delay(5000);
+
+  through_horizen(5, forward, 40);
+  delay(1000);
+  micro_movement(backward, 40, 500);
+  delay(1000);
+  set_middle(moveLeft, 40, 2000);
+  delay(1000);
+  set_horizon();
+  delay(100000);
+
+
   // ATTENTION:以下流程建立在小车走直线(包括forward(),backward(),moveLeft,moveRight,etc)的基础上,所以需要调直线.
 
   // 难度系数1.5
 
   // 找到第五条线
   // void through_horizen(int n,void (*f)(int x),int pwm)
-  through_horizen(5, forward, 40);
-  delay(1000);
 
   // 找到右边第一条中线
   // void set_middle(void (*f)(int x), int pwm, int delay_time)
-  set_middle(moveLeft, 40, 2000);
+  // set_middle(moveLeft, 40, 2000);
 
-  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
-  // void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
-  micro_movement(backward,40,100);
-  delay(1000);
+  // through_horizen(4, forward, 40);
 
-  // 向右转90,需要精准,需要调整pwm与last_time
-  // void turn_90_deg(void (*func)(int x),int pwm,int last_time)
-  turn_90_deg(turnLeft,40,2000);
+  // // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  // // void mirco_movement(void (*func)(int x), int pwm, int lasting_time)
+  // micro_movement(backward, 40, 100);
+  // delay(1000);
 
-  // 重新找到中线
-  set_middle(moveRight, 40, 2000);
+  // // 向右转90,需要精准,需要调整pwm与last_time
+  // // void turn_90_deg(void (*func)(int x),int pwm,int last_time)
+  // turn_90_deg(turnLeft, 40, 2000);
 
-  // 精准找到中间
-  micro_movement(moveLeft,40,3000);
+  // // 重新找到中线
+  // set_middle(moveRight, 40, 2000);
 
-  // 走直线到第一个投放点
-  through_horizen(4,forward,40);
-  
-  // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
-  micro_movement(backward,40,100);
+  // // 精准找到中间
+  // micro_movement(moveLeft, 40, 3000);
+
+  // // 走直线到第一个投放点
+  // through_horizen(4, forward, 40);
+
+  // // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
+  // micro_movement(backward, 40, 100);
 
   return;
 }
