@@ -96,19 +96,19 @@ void getStatus();
 void lineFollow1();
 #line 456 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void through_horizen(int n, void (*f)(int x), int pwm);
-#line 490 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 492 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void set_middle(void (*f)(int x), int pwm, int delay_time);
-#line 506 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 508 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void micro_movement(void (*func)(int x), int pwm, int last_time);
-#line 514 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 517 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void turn_90_deg(void (*func)(int x), int pwm, int last_time);
-#line 522 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 525 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void set_horizon();
-#line 541 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 546 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void command_sets_2();
-#line 558 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 574 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup();
-#line 587 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+#line 603 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void loop();
 #line 61 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void forward(int startPWM)
@@ -124,13 +124,13 @@ void forward(int startPWM)
 }
 void turnLeft(int startPWM = 200)
 {
-  DCMotor_1->setSpeed(startPWM*1.1);
+  DCMotor_1->setSpeed(startPWM * 1.1);
   DCMotor_1->run(BRAKE);
   DCMotor_2->setSpeed(startPWM);
   DCMotor_2->run(BRAKE);
-  DCMotor_3->setSpeed(startPWM*0.7);
+  DCMotor_3->setSpeed(startPWM * 0.7);
   DCMotor_3->run(FORWARD);
-  DCMotor_4->setSpeed(startPWM*1.3);
+  DCMotor_4->setSpeed(startPWM * 1.3);
   DCMotor_4->run(FORWARD);
 }
 void turnRight(int startPWM = 200)
@@ -457,7 +457,7 @@ void lineFollow1()
   }
 }
 
-void lineFollow(int vForward1=40, int vForward2=40, int vLeft1=30, int vRight1=30, int vLeft2=60, int vRight2=60, int lapse=20)
+void lineFollow(int vForward1 = 40, int vForward2 = 40, int vLeft1 = 30, int vRight1 = 30, int vLeft2 = 60, int vRight2 = 60, int lapse = 20)
 {
   SRR = (io.digitalRead(INPUT_PIN_S0));
   SR = (io.digitalRead(INPUT_PIN_S1));
@@ -517,12 +517,14 @@ void through_horizen(int n, void (*f)(int x), int pwm)
     getStatus();
     if (detectNum >= 3)
     {
-      if(SRR==1){
+      if (SRR == 1)
+      {
         turnLeft();
         delay(50);
         f(pwm);
       }
-      else if(SLL==1){
+      else if (SLL == 1)
+      {
         turnRight();
         delay(50);
         f(pwm);
@@ -559,6 +561,7 @@ void set_middle(void (*f)(int x), int pwm, int delay_time)
 void micro_movement(void (*func)(int x), int pwm, int last_time)
 {
   func(pwm);
+  Serial.println("IM RUNNING!!!");
   delay(last_time);
   stopMoving();
   return;
@@ -572,34 +575,47 @@ void turn_90_deg(void (*func)(int x), int pwm, int last_time)
   return;
 }
 
-void set_horizon(){
-  while(true)
+void set_horizon()
+{
+  while (true)
   {
     getStatus();
-    if(detectNum==5){
+    if (detectNum == 5)
+    {
       stopMoving();
       return;
     }
-    else{
+    else
+    {
       lineFollow();
     }
   }
-  
 }
 
 /******************************************
               test_functions
 ******************************************/
 
-void command_sets_2(){
+void command_sets_2()
+{
   // 假设对完线，开始测试旋转
-  micro_movement(backward,40,400);
+  delay(1000);
+  micro_movement(backward, 40, 400);
   delay(2000);
-  turn_90_deg(turnLeft,40,2500); // 这个好像蛮准的
+  turn_90_deg(turnLeft, 40, 2200); // 这个好像蛮准的
   delay(2000);
-  
-  set_middle(moveRight,40,2000);
-  micro_movement(moveLeft,40,600); // delay_time = ___ waited to be set
+
+  micro_movement(backward, 40, 400);
+  delay(2000);
+
+  through_horizen(4, forward, 40);
+  delay(2000);
+  micro_movement(backward, 40, 200);
+  delay(2000);
+  set_middle(moveLeft, 40, 2000);
+  delay(2000);
+  micro_movement(moveRight, 40, 400); // delay_time = ___ waited to be set
+  delay(2000);
   set_horizon();
   delay(10000);
 }
@@ -639,8 +655,8 @@ void setup()
 
 void loop()
 {
-  through_horizen(5,forward,40);
-  delay(5000);
+  command_sets_2();
+
   // through_horizen(5, forward, 40);
   // delay(1000);
   // micro_movement(backward, 40, 400);
