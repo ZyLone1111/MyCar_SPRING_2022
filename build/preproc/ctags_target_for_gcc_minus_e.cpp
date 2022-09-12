@@ -101,20 +101,20 @@ void moveLeft(int startPWM = 200)
   DCMotor_1->run(2);
   DCMotor_2->setSpeed(startPWM);
   DCMotor_2->run(1);
-  DCMotor_3->setSpeed(startPWM);
+  DCMotor_3->setSpeed(startPWM*0.85);
   DCMotor_3->run(2);
   DCMotor_4->setSpeed(startPWM);
   DCMotor_4->run(1);
 }
 void moveRight(int startPWM = 200)
 {
-  DCMotor_1->setSpeed(200);
+  DCMotor_1->setSpeed(startPWM*1.1);
   DCMotor_1->run(1);
-  DCMotor_2->setSpeed(200);
+  DCMotor_2->setSpeed(startPWM*1.1);
   DCMotor_2->run(2);
-  DCMotor_3->setSpeed(200);
+  DCMotor_3->setSpeed(startPWM);
   DCMotor_3->run(1);
-  DCMotor_4->setSpeed(200);
+  DCMotor_4->setSpeed(startPWM*1.2);
   DCMotor_4->run(2);
 }
 void backward(int startPWM = 200)
@@ -310,32 +310,26 @@ void pid_control_all(int targetVolocity1, int targetVolocity2, int targetVolocit
               Servos
 
 ******************************************/
-# 302 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 301 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+// Servo4: init->40 fetch->90
+
 void init_pos()
 {
   Servo1->writeServo(45);
-  Servo2->writeServo(45);
   Servo3->writeServo(90);
-  Servo4->writeServo(0);
+  Servo4->writeServo(90);
+  delay(500);
+  Servo2->writeServo(45);
 }
 
 void fetch()
 {
-  // Motion_1
-  Servo1->writeServo(90);
-  Servo2->writeServo(90);
-  delay(1000);
-  // Motion_2
-  Servo1->writeServo(150);
-  Servo3->writeServo(150);
-  delay(1000);
-  // Motion_3
-  Servo4->writeServo(60);
-  delay(1000);
-  // Motion_4
-  Servo1->writeServo(45);
-  Servo2->writeServo(45);
-  Servo3->writeServo(90);
+  Servo4->writeServo(90);
+}
+
+void loose()
+{
+  Servo4->writeServo(40);
 }
 
 void place()
@@ -344,7 +338,14 @@ void place()
   Servo2->writeServo(90);
   Servo3->writeServo(150);
   delay(1000);
-  Servo4->writeServo(0);
+  Servo4->writeServo(40);
+}
+
+void prepare()
+{
+  Servo1->writeServo(150);
+  Servo2->writeServo(80);
+  Servo3->writeServo(160);
 }
 
 void readPos()
@@ -471,7 +472,7 @@ void through_horizen(int n, void (*f)(int x), int pwm)
 {
   Serial.println("Test!");
   int cnt = 0;
-  int num;
+  //int num;
   f(pwm);
   while (cnt < n)
   {
@@ -495,6 +496,45 @@ void through_horizen(int n, void (*f)(int x), int pwm)
       Serial.println(cnt);
       if (cnt != n)
         delay(500); //最后一次精准停在线上
+    }
+    // last_movingStatus=movingStatus;
+  }
+  stopMoving();
+  delay(1000);
+  return;
+}
+
+void through_horizen_on_line(int n, void (*f)(int x), int pwm)
+{
+  Serial.println("Test!");
+  int cnt_1 = 0;
+  //int num;
+  f(pwm);
+  while (cnt_1 < n)
+  {
+    getStatus();
+    if (detectNum >= 3)
+    {
+      if (SRR == 1)
+      {
+        turnLeft();
+        delay(50);
+        f(pwm);
+      }
+      else if (SLL == 1)
+      {
+        turnRight();
+        delay(50);
+        f(pwm);
+      }
+      cnt_1++;
+      Serial.print("cnt=");
+      Serial.println(cnt_1);
+      if (cnt_1 != n)
+        delay(500); //最后一次精准停在线上
+    }
+    else{
+      lineFollow(20,20,20,20,20,20,20);
     }
     // last_movingStatus=movingStatus;
   }
@@ -548,7 +588,7 @@ void set_horizon()
     }
     else
     {
-      lineFollow();
+      lineFollow(20,20,20,20,20,20,20);
     }
   }
 }
@@ -558,29 +598,135 @@ void set_horizon()
               test_functions
 
 ******************************************/
-# 546 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 585 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+//从起点至抓取完第一个物块
+void command_sets_1()
+{
+
+  delay(1000);
+  through_horizen(5, forward, 40);
+  delay(1000);
+  micro_movement(backward, 40, 500);
+  delay(1000);
+  set_middle(moveLeft, 30, 500);
+  delay(1000);
+  prepare();
+  loose();
+  delay(1000);
+  through_horizen_on_line(1,forward,20);
+  delay(1000);
+  // micro_movement(forward, 40, 200);
+  fetch();
+  delay(1000);
+  init_pos();
+}
+
+//抓取完第一个物块至放下第一个物块
 void command_sets_2()
 {
-  // 假设对完线，开始测试旋转
   delay(1000);
+  micro_movement(backward, 40, 400);
+  delay(1000);
+  turn_90_deg(turnLeft, 40, 2200); // 这个好像蛮准的
+  delay(1000);
+
+  micro_movement(backward, 40, 400);
+  delay(1000);
+
+  through_horizen(3, forward, 40);
+  delay(1000);
+  micro_movement(backward, 40, 500);
+  delay(1000);
+  set_middle(moveLeft,40, 2000);
+  delay(1000);
+  through_horizen_on_line(2,forward,20);
+  delay(1000);
+  micro_movement(moveRight, 40, 900); // delay_time probably had been set.
+  delay(2000);
+  prepare();
+  delay(2000);
+  loose();
+  delay(2000);
+  init();
+  delay(1000);
+}
+
+//放下第一个物块后，抓取第二个物块
+void command_sets_3()
+{
+  delay(1000);
+  micro_movement(backward, 40, 400);
+  delay(1000);
+  init_pos();
+  delay(1000);
+  through_horizen(3, backward, 10);
+  delay(1000);
+  micro_movement(backward, 40, 300);
+  delay(1000);
+  set_middle(moveLeft, 40, 2000);
+  delay(1000);
+  turn_90_deg(turnRight, 40, 2400); // 这个好像蛮准的
+  delay(1000);
+  micro_movement(backward,40,300);
+  delay(1000);
+  set_middle(moveLeft, 40, 2000);
+  delay(1000);
+  prepare();
+  loose();
+  delay(1000);
+  through_horizen_on_line(1,forward,20);
+  delay(1000);
+  fetch();
+  delay(1000);
+};
+
+//抓取完第二个物块至放下第二个物块
+void command_sets_4()
+{
   micro_movement(backward, 40, 400);
   delay(2000);
   turn_90_deg(turnLeft, 40, 2200); // 这个好像蛮准的
   delay(2000);
-
   micro_movement(backward, 40, 400);
   delay(2000);
-
-  through_horizen(4, forward, 40);
+  through_horizen(2, forward, 40);
   delay(2000);
   micro_movement(backward, 40, 200);
   delay(2000);
   set_middle(moveLeft, 40, 2000);
   delay(2000);
-  micro_movement(moveRight, 40, 400); // delay_time = ___ waited to be set
+  micro_movement(moveLeft, 40, 800);
+  delay(2000);
+  through_horizen(2, forward, 40);
+  delay(2000);
+  micro_movement(backward, 40, 400);
+  delay(2000);
+  set_middle(moveRight, 40, 2000);
+  delay(2000);
+  micro_movement(moveLeft, 40, 1200); // delay_time probably had been set
   delay(2000);
   set_horizon();
-  delay(10000);
+  delay(1000);
+  place();
+  // release();   //放下物块，没写
+  delay(2000);
+  init();
+  delay(1000);
+}
+
+//放下第二个物块至终点
+void command_sets_5()
+{
+  micro_movement(backward, 40, 400);
+  delay(2000);
+  turn_90_deg(turnLeft, 40, 2200); // 这个好像蛮准的
+  delay(2000);
+  micro_movement(backward, 40, 400);
+  delay(2000);
+  through_horizen(4, forward, 40);
+  delay(2000);
+  micro_movement(moveRight, 40, 700);
+  delay(2000);
 }
 
 /******************************************
@@ -588,7 +734,7 @@ void command_sets_2()
               SetupConfig
 
 ******************************************/
-# 574 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
+# 719 "c:\\Program Files\\arduino-1.8.19\\MYCAR\\mecanum_move\\mecanum_move.ino"
 void setup()
 {
   AFMS.begin(50); // 50是啥我不清楚
@@ -608,36 +754,27 @@ void setup()
   init_pos();
   delay(1000);
 
-  pos = 0;
-  rpm = 0;
-  PPR = 12;
-  gearratio = 90;
-  CPR = (PPR * 4) * gearratio;
-  kp = 1;
-  ki = 0;
-  kd = 0;
+  // pos = 0;
+  // rpm = 0;
+  // PPR = 12;
+  // gearratio = 90;
+  // CPR = (PPR * 4) * gearratio;
+  // kp = 1;
+  // ki = 0;
+  // kd = 0;
 }
 
 void loop()
 {
-  command_sets_2();
+  // command_sets_1(); //从起点至抓取完第一个物块
 
-  // through_horizen(5, forward, 40);
-  // delay(1000);
-  // micro_movement(backward, 40, 400);
-  // delay(1000);
-  // set_middle(moveLeft, 40, 2000);
-  // delay(1000);
-  // set_horizon();
-  // delay(2000);
+  // command_sets_2(); //抓取完第一个物块至放下第一个物块
 
-  // micro_movement(backward,40,400);
-  // turn_90_deg(turnLeft,40,2000);
-  // through_horizen(4,forward,40);
-  // set_middle(moveRight,40,2000);
-  // micro_movement(moveLeft,40,500);
-  // set_horizon();
-  // delay(5000);
+  command_sets_3(); //放下第一个物块后，抓取第二个物块
+
+  // command_sets_4(); //抓取完第二个物块至放下第二个物块
+
+  // command_sets_5(); //放下第二个物块至终点
 
   // ATTENTION:以下流程建立在小车走直线(包括forward(),backward(),moveLeft,moveRight,etc)的基础上,所以需要调直线.
 
@@ -673,5 +810,9 @@ void loop()
   // // 向后退一点，需要动态调整lasing_time与pwm使得小车与物块的距离使得机械爪舒适抓到物块
   // micro_movement(backward, 40, 100);
 
+  // micro_movement(moveRight, 40, 900); // delay_time probably had been set.
+  // show_rpm();
+
+  // delay(5000);
   return;
 }

@@ -2,5 +2,5 @@
     "board": "arduino:avr:uno",
     "sketch": "mecanum_move\\mecanum_move.ino",
     "output": "./build",
-    "port": "COM5"
+    "port": "COM6"
 }
